@@ -17,6 +17,10 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() body: RegisterDto) {
+    const existEmail = await this.userService.findOne({ email: body.email });
+    if (existEmail) {
+      throw new BadRequestException('Email already exist!');
+    }
     if (body.password !== body.passwordConfirm) {
       throw new BadRequestException('Passwords do not match');
     }
@@ -37,18 +41,15 @@ export class AuthController {
   ) {
     const user = await this.userService.findOne({ email });
     if (!user) {
-      console.log('User not found');
-      throw new BadRequestException('User not found');
+      throw new BadRequestException('User not found, check your email!');
     }
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
-      console.log('Invalid password');
       throw new BadRequestException('Invalid password');
     }
 
     const jwt = await this.jwtService.signAsync({ id: user.id })
     response.cookie('jwt', jwt, { httpOnly: true })
-    console.log('this is user JWT:', jwt, user);
     return user;
   }
 
