@@ -5,6 +5,8 @@ import { RegisterDto } from './models/register.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Response, Request } from 'express';
 import { AuthGuard } from './auth.guard';
+import { AuthService } from './auth.service';
+import { User } from 'src/user/models/user.entity';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller()
@@ -12,7 +14,8 @@ export class AuthController {
 
   constructor(
     private userService: UserService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private readonly authService: AuthService
   ) { }
 
   @Post('register')
@@ -37,8 +40,7 @@ export class AuthController {
   async login(
     @Body('email') email: string,
     @Body('password') password: string,
-    @Res({ passthrough: true }) response: Response
-  ) {
+  ): Promise<{ user: User; token: string }> {
     const user = await this.userService.findOne({ email });
     if (!user) {
       throw new BadRequestException('User not found, check your email!');
@@ -48,9 +50,12 @@ export class AuthController {
       throw new BadRequestException('Invalid password');
     }
 
-    const jwt = await this.jwtService.signAsync({ id: user.id })
-    response.cookie('jwt', jwt, { httpOnly: true })
-    return user;
+    const token = this.authService.getTokenForUser(user)
+
+    return {
+      user: user,
+      token: token,
+    };
   }
 
   @UseGuards(AuthGuard)
