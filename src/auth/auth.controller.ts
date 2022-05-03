@@ -4,9 +4,10 @@ import * as bcrypt from 'bcryptjs';
 import { RegisterDto } from './models/register.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Response, Request } from 'express';
-import { AuthGuard } from './auth.guard';
+// import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { User } from 'src/user/models/user.entity';
+import { AuthGuard } from '@nestjs/passport';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller()
@@ -58,22 +59,23 @@ export class AuthController {
     };
   }
 
-  @UseGuards(AuthGuard)
   @Get('user')
+  @UseGuards(AuthGuard('jwt'))
   async user(@Req() request: Request) {
-    const cookie = request.cookies['jwt']
+    // const cookie = request.cookies['jwt']
 
-    const data = await this.jwtService.verifyAsync(cookie)
+    // const data = await this.jwtService.verifyAsync(cookie)
 
-    return this.userService.findOne({ id: data['id'] });
+    // return this.userService.findOne({ id: data['id'] });
+    return request.user;
   }
 
-  @UseGuards(AuthGuard)
   @Post('logout')
+  @UseGuards(AuthGuard('jwt'))
   async logout(
     @Res({ passthrough: true }) response: Response
   ) {
-    response.clearCookie('jwt')
+    response.clearCookie('auth_cookie')
     return {
       message: 'Logged out'
     }

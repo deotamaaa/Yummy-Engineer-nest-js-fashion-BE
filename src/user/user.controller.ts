@@ -3,11 +3,11 @@ import { User } from './models/user.entity';
 import * as bcrypt from 'bcryptjs';
 import { UserService } from './user.service';
 import { UserCreateDto } from './models/user-create.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
 import { UserUpdateDto } from './models/user-update.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @UseInterceptors(ClassSerializerInterceptor)
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard('jwt'))
 @Controller('users')
 export class UserController {
 
