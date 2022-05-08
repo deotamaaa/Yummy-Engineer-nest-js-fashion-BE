@@ -1,4 +1,5 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { OrderDetail } from "src/order/order-detail.entity";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Size } from "./size.entity";
 
 @Entity('products')
@@ -24,4 +25,7 @@ export class Product {
   @ManyToMany(() => Size, (size) => size.sizeName, { cascade: true })
   @JoinTable()
   sizes: Size[]
+
+  // @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.product)
+  // orderDetails: OrderDetail[]
 }

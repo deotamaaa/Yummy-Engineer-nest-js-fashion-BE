@@ -46,6 +46,7 @@ export class UserController {
       firstName: body.firstName,
       lastName: body.lastName,
       email: body.email,
+      address: body.address
     })
     return await this.userService.findOne({ id });
   }
