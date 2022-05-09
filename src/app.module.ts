@@ -5,12 +5,10 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
-import { ProductController } from './product/product.controller';
-import { ProductService } from './product/product.service';
 import { ProductModule } from './product/product.module';
 import { OrderController } from './order/order.controller';
 import { OrderService } from './order/order.service';
-import { OrderModule } from './order/order.module';
+import { FavoriteModule } from './favorite/favorite.module';
 
 @Module({
   imports: [
@@ -28,6 +26,7 @@ import { OrderModule } from './order/order.module';
     AuthModule,
     CommonModule,
     ProductModule,
+    FavoriteModule,
   ],
   controllers: [AppController, OrderController],
   providers: [AppService, OrderService],

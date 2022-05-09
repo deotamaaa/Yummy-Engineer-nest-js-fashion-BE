@@ -7,18 +7,18 @@ export class Order {
   @PrimaryGeneratedColumn()
   orderId: number
 
-  // @ManyToOne(() => User, user => user.orders)
-  // @JoinTable({
-  //   name: 'user_order'
-  // })
-  // @Column()
-  // user: User
+  @ManyToOne(() => User, user => user.orders)
+  @JoinTable({
+    name: 'user_order'
+  })
+  @Column()
+  user: User
 
   @Column()
   orderDate: Date
 
-  // @Column()
-  // @OneToMany(() => OrderDetail, orderDetail => orderDetail.order)
-  // orderDetails: OrderDetail[]
+  @Column()
+  @OneToMany(() => OrderDetail, orderDetail => orderDetail.order)
+  orderDetails: OrderDetail[]
 
 }

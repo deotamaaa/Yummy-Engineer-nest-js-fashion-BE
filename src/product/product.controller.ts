@@ -18,6 +18,6 @@ export class ProductController {
     return await this.productService.getProductById(id)
   }
 
-
+  
 
 }

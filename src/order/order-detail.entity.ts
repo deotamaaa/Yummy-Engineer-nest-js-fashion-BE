@@ -7,13 +7,13 @@ export class OrderDetail {
   @PrimaryGeneratedColumn()
   orderDetailId: number;
 
-  // @ManyToOne(() => Order, order => order.orderDetails)
-  // @JoinTable({
-  //   name: "order_orderDetail",
-  // })
-  // order: Order;
+  @ManyToOne(() => Order, order => order.orderDetails)
+  @JoinTable({
+    name: "order_orderDetail",
+  })
+  order: Order;
 
-  // @ManyToOne(() => Product, product => product.orderDetails)
-  // @Column()
-  // product: Product;
+  @ManyToOne(() => Product, product => product.orderDetails)
+  @Column()
+  product: Product;
 }

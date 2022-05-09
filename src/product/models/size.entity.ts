@@ -9,6 +9,4 @@ export class Size {
   @Column()
   sizeName: string;
 
-  @ManyToMany(() => Product, (product) => product.sizes)
-  products: Product[];
 }
